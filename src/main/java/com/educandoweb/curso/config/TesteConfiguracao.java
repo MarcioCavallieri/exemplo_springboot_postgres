@@ -11,10 +11,10 @@ import com.educandoweb.curso.repositorios.UsuarioRepositorio;
 
 @Configuration
 @Profile("test")
-public class TesteConfiguracao implements CommandLineRunner{
+public class TesteConfiguracao implements CommandLineRunner{ //Isso é executado assim que o serviço rodar
 	
 	@Autowired
-	private UsuarioRepositorio ur; //Serviço dependendo de outro: @Autowired define uma dependência 'fraca' (Acredito que é para não causar referência circular) 
+	private UsuarioRepositorio ur; //Serviço dependendo de outro: @Autowired define uma injeção de dependência 'fraca'.Tem como fazer isso manualmente também (set, construtor...) 
  
 	@Override
 	public void run(String... args) throws Exception {
