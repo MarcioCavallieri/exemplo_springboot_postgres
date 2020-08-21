@@ -2,6 +2,7 @@ package com.educandoweb.curso.entidades;
 
 import java.io.Serializable;
 import java.time.Instant;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.educandoweb.curso.entidades.enums.PedidoStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -22,6 +25,8 @@ public class Pedido implements Serializable {
 	//Sem essa notação, no banco, o horario ficará com 3 hs a menos porque o banco está com o fusohorário do Brasil >> GMT -3
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant data;	
+	
+	private int status;
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Usuario cliente;
@@ -29,9 +34,10 @@ public class Pedido implements Serializable {
 	public Pedido() {		
 	}	
 
-	public Pedido(Long id, Instant data, Usuario cliente) {
+	public Pedido(Long id, Instant data, PedidoStatus status, Usuario cliente) {
 		this.id = id;
 		this.data = data;
+		setStatus(status); 
 		this.cliente = cliente;
 	}
 
@@ -41,6 +47,10 @@ public class Pedido implements Serializable {
 
 	public Instant getData() {
 		return data;
+	}
+	
+	public PedidoStatus getStatus() {
+		return PedidoStatus.valorDe(status);
 	}
 
 	public Usuario getCliente() {
@@ -53,6 +63,12 @@ public class Pedido implements Serializable {
 
 	public void setData(Instant data) {
 		this.data = data;
+	}
+	
+	public void setStatus(PedidoStatus status) {
+		if (status != null) {
+			this.status = status.getCodigo();
+		}
 	}
 
 	public void setCliente(Usuario cliente) {
