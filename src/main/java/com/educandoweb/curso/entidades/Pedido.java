@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "pedido")
@@ -18,6 +19,8 @@ public class Pedido implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	//Sem essa notação, no banco, o horario ficará com 3 hs a menos porque o banco está com o fusohorário do Brasil >> GMT -3
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant data;	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")

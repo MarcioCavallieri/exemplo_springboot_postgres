@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "usuario")
@@ -22,7 +23,13 @@ public class Usuario implements Serializable {
 	private String email;
 	private String telefone;
 	private String senha;
+	/*
+	 * Como o usuario tem uma lista de pedidos, e cada pedido tem uma property de usuário, ele entra em loop (um busca o outro e o outro busca o um)
+	 * Para evitar isso, usar o @JsonIgnore. Essa notação impede que uma propriedade aninhada seja buscada automaticamente. 
+	 * Bom usar para impedir um carregamento de uma lista sem necessidade, fazendo o lazyload
+	 */	  
 	@OneToMany(mappedBy = "cliente")
+	@JsonIgnore 
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
 	
 	public Usuario() {
@@ -57,6 +64,10 @@ public class Usuario implements Serializable {
 		return senha;
 	}
 
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -75,10 +86,6 @@ public class Usuario implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	public List<Pedido> getPedidos() {
-		return pedidos;
 	}
 
 	@Override
@@ -104,7 +111,5 @@ public class Usuario implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}		
-	
-	
+	}				
 }
