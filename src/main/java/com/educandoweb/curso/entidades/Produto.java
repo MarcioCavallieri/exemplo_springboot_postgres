@@ -7,8 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "produto")
@@ -23,8 +28,11 @@ public class Produto implements Serializable {
 	private Double preco;
 	private String imagemUrl;
 	
-	@Transient
-	private Set<Categoria> categorias = new HashSet<Categoria>();
+	//Associação de muitos para muitos, criando uma tabela no meio do caminho, para representar essa associação
+	@ManyToMany
+	@Fetch(FetchMode.JOIN)
+	@JoinTable(name = "tb_produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+	private Set<Categoria> categorias = new HashSet<>();
 	
 	public Produto() {
 	
@@ -105,5 +113,5 @@ public class Produto implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}
 }
