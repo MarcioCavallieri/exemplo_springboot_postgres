@@ -11,25 +11,31 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "categoria")
-public class Categoria implements Serializable {
+@Table(name = "produto")
+public class Produto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	private String descricao;
+	private Double preco;
+	private String imagemUrl;
 	
 	@Transient
-	private Set<Produto> produtos = new HashSet<Produto>();
+	private Set<Categoria> categorias = new HashSet<Categoria>();
 	
-	public Categoria() {
-		
+	public Produto() {
+	
 	}
 	
-	public Categoria(Long id, String nome) {
+	public Produto(Long id, String nome, String descricao, Double preco, String imagemUrl) {
 		this.id = id;
 		this.nome = nome;
+		this.descricao = descricao;
+		this.preco = preco;
+		this.imagemUrl = imagemUrl;
 	}
 
 	public Long getId() {
@@ -40,8 +46,20 @@ public class Categoria implements Serializable {
 		return nome;
 	}
 
-	public Set<Produto> getProdutos() {
-		return produtos;
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public Double getPreco() {
+		return preco;
+	}
+
+	public String getImagemUrl() {
+		return imagemUrl;
+	}
+
+	public Set<Categoria> getCategorias() {
+		return categorias;
 	}
 	
 	public void setId(Long id) {
@@ -50,6 +68,18 @@ public class Categoria implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
+	public void setImagemUrl(String imagemUrl) {
+		this.imagemUrl = imagemUrl;
 	}
 
 	@Override
@@ -68,12 +98,12 @@ public class Categoria implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Produto other = (Produto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}		
+	}	
 }
