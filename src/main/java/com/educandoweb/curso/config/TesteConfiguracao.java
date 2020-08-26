@@ -7,11 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import com.educandoweb.curso.entidades.Categoria;
+import com.educandoweb.curso.entidades.ItemPedido;
 import com.educandoweb.curso.entidades.Pedido;
 import com.educandoweb.curso.entidades.Produto;
 import com.educandoweb.curso.entidades.Usuario;
 import com.educandoweb.curso.entidades.enums.PedidoStatus;
 import com.educandoweb.curso.repositorios.CategoriaRepositorio;
+import com.educandoweb.curso.repositorios.ItemPedidoRepositorio;
 import com.educandoweb.curso.repositorios.PedidoRepositorio;
 import com.educandoweb.curso.repositorios.ProdutoRepositorio;
 import com.educandoweb.curso.repositorios.UsuarioRepositorio;
@@ -23,12 +25,18 @@ public class TesteConfiguracao implements CommandLineRunner{ //Isso é executado
 	//Serviço dependendo de outro: @Autowired define uma injeção de dependência 'fraca'.Tem como fazer isso manualmente também (set, construtor...)
 	@Autowired
 	private UsuarioRepositorio usuarioRepositorio;  
+	
 	@Autowired
 	private PedidoRepositorio pedidoRepositorio;  
+	
 	@Autowired
 	private CategoriaRepositorio categoriaRepositorio; 
+	
 	@Autowired
 	private ProdutoRepositorio produtoRepositorio;
+	
+	@Autowired
+	private ItemPedidoRepositorio itemPedidoRepositorio;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -63,7 +71,14 @@ public class TesteConfiguracao implements CommandLineRunner{ //Isso é executado
 		pr3.getCategorias().add(c3);
 		pr4.getCategorias().add(c3);
 		pr5.getCategorias().add(c2);
-		
+				
 		produtoRepositorio.saveAll(Arrays.asList(pr1, pr2, pr3, pr4, pr5));
+		
+		ItemPedido ip1 = new ItemPedido(p1, pr1, 2, pr1.getPreco());
+		ItemPedido ip2 = new ItemPedido(p1, pr3, 1, pr3.getPreco());
+		ItemPedido ip3 = new ItemPedido(p2, pr3, 2, pr3.getPreco());
+		ItemPedido ip4 = new ItemPedido(p3, pr5, 2, pr5.getPreco());
+		
+		itemPedidoRepositorio.saveAll(Arrays.asList(ip1, ip2, ip3, ip4));
 	}
 }

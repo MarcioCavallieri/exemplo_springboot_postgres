@@ -23,13 +23,14 @@ public class Produto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String nome;
 	private String descricao;
 	private Double preco;
 	private String imagemUrl;
 	
 	//Associação de muitos para muitos, criando uma tabela no meio do caminho, para representar essa associação
-	@ManyToMany
+	@ManyToMany 
 	@Fetch(FetchMode.JOIN)
 	@JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private Set<Categoria> categorias = new HashSet<>();
