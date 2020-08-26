@@ -31,7 +31,7 @@ public class Produto implements Serializable {
 	//Associação de muitos para muitos, criando uma tabela no meio do caminho, para representar essa associação
 	@ManyToMany
 	@Fetch(FetchMode.JOIN)
-	@JoinTable(name = "tb_produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+	@JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private Set<Categoria> categorias = new HashSet<>();
 	
 	public Produto() {
