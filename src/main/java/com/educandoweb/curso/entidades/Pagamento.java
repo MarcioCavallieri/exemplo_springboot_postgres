@@ -25,7 +25,7 @@ public class Pagamento implements Serializable {
 	private Instant data;
 	
 	@OneToOne
-	@MapsId
+	@MapsId 
 	@JsonIgnore
 	private Pedido pedido;
 

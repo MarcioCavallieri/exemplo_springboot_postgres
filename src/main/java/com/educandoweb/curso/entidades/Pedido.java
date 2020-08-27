@@ -41,6 +41,7 @@ public class Pedido implements Serializable {
 	@OneToMany(mappedBy = "id.pedido", fetch = FetchType.EAGER)
 	private Set<ItemPedido> itens = new HashSet<ItemPedido>();
 	
+	//cascade = CascadeType.ALL mantém o mesmo id do pedido no pagamento
 	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private Pagamento pagamento;
 	
@@ -76,6 +77,16 @@ public class Pedido implements Serializable {
 	
 	public Pagamento getPagamento() {
 		return pagamento;
+	}
+	
+	public Double getTotal() {
+		Double total = 0.0;
+		
+		for (ItemPedido i : itens) {
+			total = total + i.getSubTotal();
+		}
+		
+		return total;
 	}
 	
 	public void setId(Long id) {
