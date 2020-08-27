@@ -4,16 +4,19 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "produto")
@@ -34,6 +37,9 @@ public class Produto implements Serializable {
 	@Fetch(FetchMode.JOIN)
 	@JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private Set<Categoria> categorias = new HashSet<>();
+	
+	@OneToMany(mappedBy = "id.produto", fetch = FetchType.EAGER)
+	private Set<ItemPedido> pedidos = new HashSet<ItemPedido>();
 	
 	public Produto() {
 	
@@ -69,6 +75,17 @@ public class Produto implements Serializable {
 
 	public Set<Categoria> getCategorias() {
 		return categorias;
+	}
+	
+	@JsonIgnore
+	public Set<Pedido> getPedidos() {
+		Set<Pedido> pedidos = new HashSet<Pedido>();
+		
+		for (ItemPedido item : this.pedidos) {
+			pedidos.add(item.getPedido());
+		}
+		
+		return pedidos;
 	}
 	
 	public void setId(Long id) {
