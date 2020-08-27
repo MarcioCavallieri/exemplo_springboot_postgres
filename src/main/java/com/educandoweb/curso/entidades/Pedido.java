@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import com.educandoweb.curso.entidades.enums.PedidoStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -38,6 +40,9 @@ public class Pedido implements Serializable {
 	//fetch = FetchType.EAGER que fez o @JsonIgnore da classe ItemPedido funcionar dessa vez...
 	@OneToMany(mappedBy = "id.pedido", fetch = FetchType.EAGER)
 	private Set<ItemPedido> itens = new HashSet<ItemPedido>();
+	
+	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
+	private Pagamento pagamento;
 	
 	public Pedido() {		
 	}	
@@ -69,6 +74,10 @@ public class Pedido implements Serializable {
 		return itens;
 	}
 	
+	public Pagamento getPagamento() {
+		return pagamento;
+	}
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -85,6 +94,10 @@ public class Pedido implements Serializable {
 
 	public void setCliente(Usuario cliente) {
 		this.cliente = cliente;
+	}
+	
+	public void setPagamento(Pagamento pagamento) {
+		this.pagamento = pagamento;
 	}
 
 	@Override

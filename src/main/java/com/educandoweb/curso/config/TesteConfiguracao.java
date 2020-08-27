@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import com.educandoweb.curso.entidades.Categoria;
 import com.educandoweb.curso.entidades.ItemPedido;
+import com.educandoweb.curso.entidades.Pagamento;
 import com.educandoweb.curso.entidades.Pedido;
 import com.educandoweb.curso.entidades.Produto;
 import com.educandoweb.curso.entidades.Usuario;
@@ -80,5 +81,10 @@ public class TesteConfiguracao implements CommandLineRunner{ //Isso é executado
 		ItemPedido ip4 = new ItemPedido(p3, pr5, 2, pr5.getPreco());
 		
 		itemPedidoRepositorio.saveAll(Arrays.asList(ip1, ip2, ip3, ip4));
+		
+		Pagamento pg1 = new Pagamento(null, Instant.parse("2019-07-21T05:42:10Z"), p2);
+		p2.setPagamento(pg1);
+		
+		pedidoRepositorio.save(p2);
 	}
 }
