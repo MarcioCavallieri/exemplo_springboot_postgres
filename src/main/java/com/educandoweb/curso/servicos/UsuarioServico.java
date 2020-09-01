@@ -2,12 +2,11 @@ package com.educandoweb.curso.servicos;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.educandoweb.curso.entidades.Usuario;
 import com.educandoweb.curso.repositorios.UsuarioRepositorio;
+import com.educandoweb.curso.servicos.excecoes.ResourceNotFoundException;
 
 @Service
 public class UsuarioServico {
@@ -21,7 +20,9 @@ public class UsuarioServico {
 	
 	public Usuario ObterPorId(Long id) {
 		Optional<Usuario> obj = repositorio.findById(id);
-		return obj.get();
+		
+		//Faz o .Get, mas se não tiver objeto no Optional, ele lançará a Exceção ResourceNotFound personalizada
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public Usuario inserir(Usuario obj) {
